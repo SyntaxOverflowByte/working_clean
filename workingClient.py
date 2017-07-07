@@ -34,7 +34,7 @@ def egress_node():
 #Main function, connect to remote server
 #Currently using the tcpClient.py as the base - 
 #Will try to include a way to pass commands and return some information, 
-#Possibly like a sys command?
+#Possibly like a series of commands from the subprocess module
 def Main():
     VPS = egress_node()
 

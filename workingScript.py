@@ -4,9 +4,10 @@
 '''
 
 import JSON
+import simplejson
 import os
 from Crypto.PublicKey import RSA
-
+import socket
 
 INV_ROOT = os.path.join('/share/', 'inventory/')
 EGRESS_INV = os.path.join(INV_ROOT, 'egress_inventory.json')
@@ -38,7 +39,7 @@ def egress_node():
     for count in range(len(egress_inventory)):
         egress_vps = egress_inventory[count]
         print "%d %s : %s" % ( (count + 1), egress_vps['name'], egress_vps['location'])
-    user_choice = (raw_input("Please choose one: ") - 1)
+    user_choice = (int(raw_input("Please choose one: ")) - 1)
     chosen_vps = egress_inventory[user_choice]
     print "Your choice is: %s at IP %s out of %s" % (chosen_vps['name'], chosen_vps['ip'], chosen_vps['location'])
     return(chosen_vps)
@@ -63,10 +64,14 @@ def gen_keys():
         with open(PUBKEY_FILE, 'w') as f:
             f.write(public.exportKey())
 
+#Replace ports with port plus count to validate which server is being used
+#   Will not be necessary in practice
+def replace_ports():
+    for count in range(len(egress_inventory)):
+        egress_inventory[count]['port'] = (egress_inventory[count]['port'] + (count * count))
+    with open('/share/inventory/egress_inventory.json', 'w') as f:
+        f.write(simplejson.dumps(egress_inventory, indent=4))
 
 
-
-
-
-
+def tcp_out():
 

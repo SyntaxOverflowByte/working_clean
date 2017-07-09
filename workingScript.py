@@ -12,6 +12,7 @@ import socket
 INV_ROOT = os.path.join('/share/', 'inventory/')
 EGRESS_INV = os.path.join(INV_ROOT, 'egress_inventory.json')
 KEYFILE = os.path.join(INV_ROOT, 'egress_keys/')
+FWD_INV = os.path.join(INV_ROOT, 'inventory.json')
 
 #Load JSON file into memory
 with open(EGRESS_INV) as f:
@@ -71,7 +72,43 @@ def replace_ports():
         egress_inventory[count]['port'] = (egress_inventory[count]['port'] + (count * count))
     with open('/share/inventory/egress_inventory.json', 'w') as f:
         f.write(simplejson.dumps(egress_inventory, indent=4))
+#Menu to change the forward information
+def change_menu():
+    print "This is the change menu."
+    print "Which would you like to change"
+    print "1. Change the IP address"
+    print "2. Change the port"
+    while True:
+        try:
+            menu_choice = int(raw_input("Please choose one: "))
+            if menu_choice == (1 | 2):
+                return menu_choice
+        except:
+            print "Please make a choice"
+
+#TODO Function to Iterate through VPS
 
 
-def tcp_out():
+#Iterate through forward VPS
+def iterate_sshfwd():
+    with open(FWD_INV) as f:
+        sshfwd_inv = json.load(f)
+    for i in range(len(sshfwd_inv)):
+        print "%d. %s %s : %d" % ((i+1), sshfwd_inv[i]['name'], sshfwd_inv[i]['ip'], sshfwd[i]['port'])
+    return sshfwd_inv
+
+#TODO Change IP Address
+#TODO Change port
+
+#Give the user the ability to replace the IPs and Ports
+#Needs more input validation
+def change_sshfwd():
+    while True:
+        iterate_sshfwd()
+        main_choice = change_menu()
+        if main_choice == 1:
+            while True:
+                iterate_sshfwd()
+                try:
+                    ip_choice = str(raw_input("Please enter the new IP Address: "))
 

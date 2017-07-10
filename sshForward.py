@@ -23,4 +23,4 @@ def fwd_inv():
         sshfwd_inv = json.load(f)
     return sshfwd_inv
 
-
+class ssh_fwd(self, 
